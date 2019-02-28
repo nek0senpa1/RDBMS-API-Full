@@ -1,14 +1,11 @@
 const express = require('express');
 const helmet = require('helmet');
-
+const knex = require('knex');
 
 const softserver = express();
 
 softserver.use(helmet());
 softserver.use(express.json());
-
-
-// const knex = require('knex');
 
 // const knexConfig = {
 //   client: 'sqlite3',
@@ -18,9 +15,9 @@ softserver.use(express.json());
 //   }
 // }
 
-//const knexConfig = require('../knexfile.js')
+const knexConfig = require('../knexfile');
 
-// const db = knex(knexConfig);
+const db = knex(knexConfig);
 
 softserver.get('/', (req, res) => {
   db('roles')
