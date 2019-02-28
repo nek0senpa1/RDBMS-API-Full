@@ -40,13 +40,26 @@ softserver.get('/api/cohorts', (req, res) => {
 softserver.get('/api/cohorts/:id', (req, res) => {
   db('cohorts')
   .where({id: req.params.id})
-  .then(role => {
-    res.status(200).json({role})
+  .first()
+  .then(cohort => {
+    res.status(200).json({cohort})
   })
   .catch(err => {
     res.status(500).json(err)
   })
   
+});
+
+softserver.get('/api/cohorts/:id/students', (req, res) => {
+    db('cohorts')
+    .where({id: req.params.id})
+    .first()
+    .then(stuff => {
+        res.status(200).json(stuff)
+    })
+    .catch(err => {
+        res.status(500).json(err).send({message: 'You goofed it up bad'})
+    })
 });
 
 
@@ -62,7 +75,7 @@ softserver.post('/api/cohorts', (req, res) => {
     //})
   })
   .catch(err => {
-    res.status(500).json(err)
+    res.status(500).json(err).send({message: 'probably a dupe name'})
   })
 });
 

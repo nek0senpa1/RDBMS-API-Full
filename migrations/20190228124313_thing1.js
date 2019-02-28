@@ -4,6 +4,8 @@ exports.up = function(knex, Promise) {
       tabble.increments();
 
       tabble.string('name').notNullable().unique();
+
+      
   })
 };
 
