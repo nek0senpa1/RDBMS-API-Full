@@ -51,12 +51,13 @@ softserver.get('/api/cohorts/:id', (req, res) => {
 });
 
 softserver.get('/api/cohorts/:id/students', (req, res) => {
-    db('cohorts')
-    .where({id: req.params.id})
-    .first()
-    .then(stuff => {
-        res.status(200).json(stuff)
+    db('students')
+    .where({cohort_id: req.params.id})
+    .then ( studenties => {
+        res.status(200).json(studenties);
     })
+    
+    
     .catch(err => {
         res.status(500).json(err).send({message: 'You goofed it up bad'})
     })
