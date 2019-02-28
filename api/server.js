@@ -1,3 +1,4 @@
+
 const express = require('express');
 const helmet = require('helmet');
 const knex = require('knex');
@@ -17,10 +18,17 @@ softserver.use(express.json());
 
 const knexConfig = require('../knexfile');
 
-const db = knex(knexConfig);
+
+
+const db = knex(knexConfig.development);
 
 softserver.get('/', (req, res) => {
-  db('roles')
+    res.send ({message: 'Heyo it is working!'})
+  });
+
+
+softserver.get('/api/cohorts', (req, res) => {
+  db('cohorts')
   .then( roles => {
     res.status(200).json(roles)
   })
@@ -29,8 +37,8 @@ softserver.get('/', (req, res) => {
   })
 });
 
-softserver.get('/:id', (req, res) => {
-  db('roles')
+softserver.get('/api/cohorts/:id', (req, res) => {
+  db('cohorts')
   .where({id: req.params.id})
   .then(role => {
     res.status(200).json({role})
@@ -43,9 +51,9 @@ softserver.get('/:id', (req, res) => {
 
 
 
-softserver.post('/', (req, res) => {
+softserver.post('/api/cohorts', (req, res) => {
   
-  db('roles')
+  db('cohorts')
   .insert(req.body)
   .then(ids => {
     //const[id] = ids;
@@ -60,13 +68,13 @@ softserver.post('/', (req, res) => {
 
 
 
-softserver.put('/:id', (req, res) => {
-  db('roles')
+softserver.put('/api/cohorts/:id', (req, res) => {
+  db('cohorts')
   .where({id: req.params.id})
   .update(req.body)
   .then( count => {
     if (count > 0) {
-      db('roles').where({id: req.params.id})
+      db('cohorts').where({id: req.params.id})
       .then( role => {
         res.status(200).json(role)
       })
@@ -79,10 +87,10 @@ softserver.put('/:id', (req, res) => {
 
 
 
-softserver.delete('/:id', (req, res) => {
+softserver.delete('/api/cohorts/:id', (req, res) => {
   const id = req.params.id;
   
-  db('roles').where({id}).del()
+  db('cohorts').where({id}).del()
   .then(response => {
     if(response > 0) {
       res.status(204).json({message: 'Dude it is gone!'})
